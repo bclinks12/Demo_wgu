@@ -110,7 +110,7 @@ Try{
 Catch [System.DivideByZeroException]
 {
     Write-Host -ForegroundColor Red "Only Chuck Norris can divide by Zero!"
-    $_
+    Write-Host -ForegroundColor Red "$($PSItem.ToString())'n'n$($PSItem.ScriptStackTrace)"
 }
 Catch 
 {
