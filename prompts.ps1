@@ -55,7 +55,7 @@ function Show-Menu {
     
     
     Write-Host $Title
-    Write-Host "______________________"
+    Write-Host "_____________________________________________________________"
     
     # Write a loop for the exact size for the array of options
     for ($i = 0; $i -lt $Options.Length; $i++)
@@ -64,7 +64,7 @@ function Show-Menu {
         Write-Host "$($i+1). $($Options[$i])"
     }
     # Prompt the end user for input
-    $selection = Read-Host "Please select an option from the following:"
+    $selection = Read-Host "Please enter a value between 1 - 5"
     
     # Validate the input with RegEx
     if ($selection -match '^\d+$' -and $selection -le $Options.Length)
@@ -85,7 +85,7 @@ function Show-Menu {
     
     Try {
         while($UserInput -ne 5) {
-            $UserInput = Show-Menu -Title "Please Select an Option from the following " -Options $menuOptions
+            $UserInput = Show-Menu -Title "Please Select an Option from the list below:" -Options $menuOptions
 
             switch ($UserInput) {
                 # End User Selects Option 1 - Display Daily Logs
