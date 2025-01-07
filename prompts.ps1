@@ -78,8 +78,9 @@ function Show-Menu {
         Write-Host - ForegroundColor Red "`n*Invalid selection. Please select from the current list of option.*`n"
         Show-Menu - Title $Title -Options $Options
     }
-    # End of Region Function
-    $menuOptions = @("Display Daily Logs","Display files for C916contents.txt folder","Display the current CPU and memory performance metrics","Running Process Report","Exit the Program")
+}
+# End of Region Function
+    $menuOptions = @("Display Daily Logs","Display file content","Display the current CPU and memory performance metrics","Running Process Report","Exit the Program")
     $UserInput = 1
     
     Try {
@@ -93,14 +94,57 @@ function Show-Menu {
                 Write-Verbose "Option 1 Selected"
                 Write-Host "Display Daily Logs"
                 $current_timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                $logFiles = Get-ChildItem -Path $PSScriptRoot\Requirements1 | Where-Object { $_.Name -match '\.log$' } | ForEach-Object { $_.Name }
+                $logFiles = Get-ChildItem -Path $PSScriptRoot\Requirements1 | Where-Object { $Requirements1.Name -match '\.log$' } | ForEach-Object { $Requirements1.Name }
                 $output = "[$current_timestamp]\n" + ($logFiles -join "`n") + "\n"
                 Add-Content -Path "$PSSCriptRoot\DailyLog.txt" -Value $output
                 Write-Output "Log files have been successfully appended to DailyLog.txt."
             }
-                 catch {
-                    Write-Error "Error listing .log files: $_"
-                        }
-        }
-
+            2 {
+                Write-Verbose "Option 2 selected"
+                Write-Host "Display file content"
+                # List files in tabular format and save to new file named C916contents.txt
+                $files = Get-ChildItem -Path $PSScriptRoot\Requirements1 | Sort-Object Name 
+                $files | Format-Table | Out-File -FilePath "$PSScriptRoot\C916contents.txt"
+                Write-Output "File list has been saved to C916contents.txt."
+            }
+            3 {
+                Write-Verbose "Option 3 selected"
+                Write-Host "Display the current CPU and memory performance metrics"
+                # List current CPU & memory usage
+                $current_cpu_usage = (Get-WmiObject Win32_Processor).LoadPercentage
+                $memory_usage = (Get-WmiObject Win32_OperatingSystem | Select-Object @{Name="FreeMemory(MB)"; Expression={[math]::Round($_.FreePhysicalMemory/1KB)}}, @{Name="TotalMemory(MB)"; Expression={[math]::Round($_.TotalVisibleMemorySize/1KB)}})
+                Write-Host "CPU Usage: $current_cpu_usage%"
+                Write-Host "Memory Usage: Free: $($memory_usage.FreeMemory) MB, Total: $($memory_usage.TotalMemory) MB"
+            }
+            Catch
+            {
+                Write-Error "Error retrieving CPU and memory usage: $_"
+            }
+            4 {
+                Write-Verbose "Option 4 selected"
+                Write-Host "Running Process Report"
+                # List different running processes, sort small to large, and display grid style
+                $processes = Get-Process | Sort-Object VirtualMemorySize -Ascending | Select-Object Name, Id, VirtualMemorySize
+                $processes | Format-Table | Out-GridView
+            } 
+            Catch {[System.OutOfMemoryException] 
+            
+                Write-Error "Out of memory while listing processes"
+                Write-Error "Error listing processes: $_"
+            }
+            5 {
+                Write-Verbose "Option 5 selected"
+                Write-Host "Exit the program."
+                Write-Output "Thanks for using this program. Bye Bye!"
+                break
+            }
+            default {
+                Write-Host "Invalid selection. Please try again."
+            }
+            }
+    }
+} Catch {
+    Write-Error "An error occurred: $_"
+} Finally {
+    # Close all open resources if needed
 }
