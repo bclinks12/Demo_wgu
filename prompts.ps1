@@ -94,8 +94,8 @@ function Show-Menu {
                 Write-Verbose "Option 1 Selected"
                 Write-Host "Display Daily Logs"
                 $current_timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                $logFiles = Get-ChildItem -Path $PSScriptRoot\Requirements1 | Where-Object { $Requirements1.Name -match '\.log$' } | ForEach-Object { $Requirements1.Name }
-                $output = "[$current_timestamp]\n" + ($logFiles -join "`n") + "\n"
+                $logFiles = Get-ChildItem -Path $PSScriptRoot | Where-Object { $Requirements1.Name -match '\.log$' } | ForEach-Object { $Requirements1.Name }
+                $output = "[$current_timestamp]" + ($logFiles -join "`n")
                 Add-Content -Path "$PSSCriptRoot\DailyLog.txt" -Value $output
                 Write-Output "Log files have been successfully appended to DailyLog.txt."
             }
