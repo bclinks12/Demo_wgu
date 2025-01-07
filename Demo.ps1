@@ -114,7 +114,8 @@ Catch [System.DivideByZeroException]
 }
 Catch 
 {
-    $_
+    Write-Host -ForegroundColor Red "An unhandled Exception Occured"
+    Write-Host -ForegroundColor Red "$($PSItem.ToString())'n'n$($PSItem.ScriptStackTrace)"
 }
 Finally
 {
