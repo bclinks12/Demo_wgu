@@ -110,12 +110,12 @@ Try{
 Catch [System.DivideByZeroException]
 {
     Write-Host -ForegroundColor Red "Only Chuck Norris can divide by Zero!"
-    Write-Host -ForegroundColor Red "$($PSItem.ToString())'n'n$($PSItem.ScriptStackTrace)"
+    Write-Host -ForegroundColor Red "$($PSItem.ToString())`n`n$($PSItem.ScriptStackTrace)"
 }
 Catch 
 {
     Write-Host -ForegroundColor Red "An unhandled Exception Occured"
-    Write-Host -ForegroundColor Red "$($PSItem.ToString())'n'n$($PSItem.ScriptStackTrace)"
+    Write-Host -ForegroundColor Red "$($PSItem.ToString())`n`n$($PSItem.ScriptStackTrace)"
 }
 Finally
 {
