@@ -78,22 +78,18 @@ function Show-Menu {
         Write-Host - ForegroundColor Red "`n*Invalid selection. Please select from the current list of option.*`n"
         Show-Menu - Title $Title -Options $Options
     }
-}
-# End of Region Function
+    # End of Region Function
     $menuOptions = @("Display Daily Logs","Display files for C916contents.txt folder","Display the current CPU and memory performance metrics","Running Process Report","Exit the Program")
     $UserInput = 1
     
-    Try{
+    Try {
         while($UserInput -ne 5) {
-    }
-        $UserInput = Show-Menu -Title "Please Select an Option from the following " -Options $menuOptions
+            $UserInput = Show-Menu -Title "Please Select an Option from the following " -Options $menuOptions
 
-        switch ($UserInput)
-        {
-            # End User Selects Option 1 - Display Daily Logs
-            1
-            #Code for option 1 - Append .log file contents to DailyLog.txt with the current date
-            {
+            switch ($UserInput) {
+                # End User Selects Option 1 - Display Daily Logs
+            1 {         
+                #Code for option 1 - Append .log file contents to DailyLog.txt with the current date
                 Write-Verbose "Option 1 Selected"
                 Write-Host "Display Daily Logs"
                 $current_timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -101,13 +97,10 @@ function Show-Menu {
                 $output = "[$current_timestamp]\n" + ($logFiles -join "`n") + "\n"
                 Add-Content -Path "$PSSCriptRoot\DailyLog.txt" -Value $output
                 Write-Output "Log files have been successfully appended to DailyLog.txt."
-            } catch {
-                Write-Error "Error listing .log files: $_"
-                    }
+            }
+                 catch {
+                    Write-Error "Error listing .log files: $_"
+                        }
         }
 
-}
-Finally
-{
-    #Close all open resources
 }
