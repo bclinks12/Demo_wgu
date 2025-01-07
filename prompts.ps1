@@ -78,12 +78,13 @@ function Show-Menu {
         Write-Host - ForegroundColor Red "`n*Invalid selection. Please select from the current list of option.*`n"
         Show-Menu - Title $Title -Options $Options
     }
-    # End of Region Function
+}
+# End of Region Function
     $menuOptions = @("Display Daily Logs","Display files for C916contents.txt folder","Display the current CPU and memory performance metrics","Running Process Report","Exit the Program")
     $UserInput = 1
     
     Try{
-        while($UserInput -ne 5)
+        while($UserInput -ne 5) {
     }
         $UserInput = Show-Menu -Title "Please Select an Option from the following " -Options $menuOptions
 
@@ -105,4 +106,8 @@ function Show-Menu {
                     }
         }
 
+}
+Finally
+{
+    #Close all open resources
 }
