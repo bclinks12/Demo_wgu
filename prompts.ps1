@@ -112,8 +112,8 @@ function Show-Menu {
                 Write-Verbose "Option 3 selected"
                 Write-Host -ForegroundColor Green "Current CPU and memory performance metrics"
                 # List current CPU & memory usage
-                $current_cpu_usage = (Get-WmiObject Win32_Processor).LoadPercentage
-                $memory_usage = Get-WmiObject Win32_OperatingSystem | Select-Object @{Name="FreeMemory"; Expression={[math]::Round($_.FreePhysicalMemory / 1KB)}}, @{Name="TotalMemory"; Expression={[math]::Round($_.TotalVisibleMemorySize / 1KB)}}
+                $current_cpu_usage = (Get-CimInstance Win32_Processor).LoadPercentage
+                $memory_usage = Get-CimInstance Win32_OperatingSystem | Select-Object @{Name="FreeMemory"; Expression={[math]::Round($_.FreePhysicalMemory / 1KB)}}, @{Name="TotalMemory"; Expression={[math]::Round($_.TotalVisibleMemorySize / 1KB)}}
                 Write-Host "CPU Usage: $current_cpu_usage%"
                 Write-Host "Memory Usage: Free: $($memory_usage.FreeMemory) MB, Total: $($memory_usage.TotalMemory) MB"
             }
