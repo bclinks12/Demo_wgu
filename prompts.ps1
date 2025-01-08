@@ -65,6 +65,7 @@ function Show-Menu {
     }
     # Prompt the end user for input
     $selection = Read-Host "Please enter a value between 1 - 5"
+
     
     # Validate the input with RegEx
     if ($selection -match '^\d+$' -and $selection -le $Options.Length)
@@ -75,8 +76,8 @@ function Show-Menu {
     else 
     {
         # If the input is invalid, inform the user and re-promtp
-        Write-Host - ForegroundColor Red "`n*Invalid selection. Please select from the current list of option.*`n"
-        Show-Menu - Title $Title -Options $Options
+        Write-Host -ForegroundColor Red "`nInvalid selection. Please select from the current list of option.`n"
+        Show-Menu -Title $Title -Options $Options
     }
 }
 # End of Region Function
@@ -85,7 +86,7 @@ function Show-Menu {
     
     Try {
         while($UserInput -ne 5) {
-            $UserInput = Show-Menu -Title "Please Select an Option from the list below:" -Options $menuOptions
+            $UserInput = Show-Menu -Title "`nPlease Select an Option from the list below:" -Options $menuOptions
 
             switch ($UserInput) {
                 # End User Selects Option 1 - Display Daily Logs
@@ -94,25 +95,25 @@ function Show-Menu {
                 Write-Verbose "Option 1 Selected"
                 Write-Host "Display Daily Logs"
                 $current_timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                $logFiles = Get-ChildItem -Path $PSScriptRoot | Where-Object { $Requirements1.Name -match '\.log$' } | ForEach-Object { $Requirements1.Name }
-                $output = "[$current_timestamp]" + ($logFiles -join "`n")
+                $logFiles = Get-ChildItem -Path $PSSCriptRoot | Where-Object { $_.Name -match '\.log$' } | ForEach-Object { $_.Name }
+                $output = "[$current_timestamp]`n" + ($logFiles -join "`n")
                 Add-Content -Path "$PSSCriptRoot\DailyLog.txt" -Value $output
-                Write-Output "Log files have been successfully appended to DailyLog.txt."
+                
             }
             2 {
                 Write-Verbose "Option 2 selected"
                 Write-Host "Display file content"
                 # List files in tabular format and save to new file named C916contents.txt
-                $files = Get-ChildItem -Path $PSScriptRoot\Requirements1 | Sort-Object Name 
+                $files = Get-ChildItem -Path $PSSCriptRoot| Sort-Object Name 
                 $files | Format-Table | Out-File -FilePath "$PSScriptRoot\C916contents.txt"
-                Write-Output "File list has been saved to C916contents.txt."
+                
             }
             3 {
                 Write-Verbose "Option 3 selected"
-                Write-Host "Display the current CPU and memory performance metrics"
+                Write-Host -ForegroundColor Green "Current CPU and memory performance metrics"
                 # List current CPU & memory usage
                 $current_cpu_usage = (Get-WmiObject Win32_Processor).LoadPercentage
-                $memory_usage = (Get-WmiObject Win32_OperatingSystem | Select-Object @{Name="FreeMemory(MB)"; Expression={[math]::Round($_.FreePhysicalMemory/1KB)}}, @{Name="TotalMemory(MB)"; Expression={[math]::Round($_.TotalVisibleMemorySize/1KB)}})
+                $memory_usage = Get-WmiObject Win32_OperatingSystem | Select-Object @{Name="FreeMemory"; Expression={[math]::Round($_.FreePhysicalMemory / 1KB)}}, @{Name="TotalMemory"; Expression={[math]::Round($_.TotalVisibleMemorySize / 1KB)}}
                 Write-Host "CPU Usage: $current_cpu_usage%"
                 Write-Host "Memory Usage: Free: $($memory_usage.FreeMemory) MB, Total: $($memory_usage.TotalMemory) MB"
             }
@@ -124,8 +125,8 @@ function Show-Menu {
                 Write-Verbose "Option 4 selected"
                 Write-Host "Running Process Report"
                 # List different running processes, sort small to large, and display grid style
-                $processes = Get-Process | Sort-Object VirtualMemorySize -Ascending | Select-Object Name, Id, VirtualMemorySize
-                $processes | Format-Table | Out-GridView
+                $processes = Get-Process | Sort-Object VirtualMemorySize | Select-Object Name, Id, @{Name="VirtualMemorySize(MB)"; Expression={[math]::Round($_.VirtualMemorySize / 1MB, 2)}}
+                $processes | Out-GridView -Title "Running Processes"
             } 
             Catch {[System.OutOfMemoryException] 
             
@@ -134,8 +135,7 @@ function Show-Menu {
             }
             5 {
                 Write-Verbose "Option 5 selected"
-                Write-Host "Exit the program."
-                Write-Output "Thanks for using this program. Bye Bye!"
+                Write-Host -ForegroundColor Green "Thanks for using this program. Bye Bye!"
                 break
             }
             default {
@@ -146,5 +146,5 @@ function Show-Menu {
 } Catch {
     Write-Error "An error occurred: $_"
 } Finally {
-    # Close all open resources if needed
+    # Close all open resources 
 }
