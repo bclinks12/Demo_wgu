@@ -1,29 +1,5 @@
-ConvertFrom-SecureString: C:\Source\Requirements2\DemoActiveD.ps1:19:42
+New-ADOrganizationalUnit: C:\Source\Requirements2\DemoActiveD.ps1:38:26
 Line |
-  19 |  $newPassword = (ConvertFrom-SecureString "N3WP@ssword12345!" -AsPlain …
-     |                                           ~~~~~~~~~~~~~~~~~~~
-     | Cannot bind parameter 'SecureString'. Cannot convert the "N3WP@ssword12345!"
-     | value of type "System.String" to type "System.Security.SecureString".
-Set-ADAccountPassword: C:\Source\Requirements2\DemoActiveD.ps1:20:1
-Line |
-  20 |  Set-ADAccountPassword -Identity $user -NewPassword $newPassword -Rese …
-     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Cannot find an object with identity: 'bclinkscales' under:
-     | 'DC=consultingfirm,DC=com'.
-Unlock-ADAccount: C:\Source\Requirements2\DemoActiveD.ps1:23:1
-Line |
-  23 |  Unlock-ADAccount -Identity $user
-     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Cannot find an object with identity: 'bclinkscales' under:
-     | 'DC=consultingfirm,DC=com'.
-Add-ADGroupMember: C:\Source\Requirements2\DemoActiveD.ps1:25:1
-Line |
-  25 |  Add-ADGroupMember -Identity $group -Members $user
-     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Cannot find an object with identity: 'bclinkscales' under:
-     | 'DC=consultingfirm,DC=com'.
-New-ADOrganizationalUnit: C:\Source\Requirements2\DemoActiveD.ps1:49:26
-Line |
-  49 |  New-ADOrganizationalUnit -Identity $AdRoot -Name $OUCanonicalName - D …
+  38 |  New-ADOrganizationalUnit -Identity $AdRoot -Name $OUCanonicalName - D …
      |                           ~~~~~~~~~
      | A parameter cannot be found that matches parameter name 'Identity'.
