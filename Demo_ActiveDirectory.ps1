@@ -69,3 +69,4 @@ ForEach ($ADUser in $NewADUsers) {
         OfficePhone         = $($ADUser.OfficePhone )
     }
 }
+
