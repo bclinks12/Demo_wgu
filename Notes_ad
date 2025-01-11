@@ -3,3 +3,11 @@ Line |
   38 |  New-ADOrganizationalUnit -Identity $AdRoot -Name $OUCanonicalName - D …
      |                           ~~~~~~~~~
      | A parameter cannot be found that matches parameter name 'Identity'.
+
+
+
+Invoke-Sqlcmd: C:\Source\Requirements2\Restore-SQL.ps1:45:1
+Line |
+  45 |  Invoke-Sqlcmd -Database ClientDB –ServerInstance .\SQLEXPRESS -Query  …
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid object name 'dbo.Client_A_Contacts'.   Msg 208, Level 16, State 1, Procedure , Line 1.
