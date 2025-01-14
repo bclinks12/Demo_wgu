@@ -1,13 +1,19 @@
-New-ADOrganizationalUnit: C:\Source\Requirements2\DemoActiveD.ps1:38:26
-Line |
-  38 |  New-ADOrganizationalUnit -Identity $AdRoot -Name $OUCanonicalName - D …
-     |                           ~~~~~~~~~
-     | A parameter cannot be found that matches parameter name 'Identity'.
+#1.
+try {
+    #Check if the OU - Finance exists
+    $OU = Get-ADOrganizationalUnit -Identity $ADPath
+    Write-Host "OU - Finance already exists!" -ForegroundColor Green
+}
+catch {
+    #If the OU - Finance doesn't exist
+    $OU = $null
+    Write-Host "OU - Finance not found!" -ForegroundColor Red
+}
 
-
-
-Invoke-Sqlcmd: C:\Source\Requirements2\Restore-SQL.ps1:45:1
-Line |
-  45 |  Invoke-Sqlcmd -Database ClientDB –ServerInstance .\SQLEXPRESS -Query  …
-     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid object name 'dbo.Client_A_Contacts'.   Msg 208, Level 16, State 1, Procedure , Line 1.
+if ($OU) {
+    Set-ADOrganizationalUnit -Identity $ADPath -ProtectedFromAccidentalDeletion:$false
+    Remove-ADOrganizationalUnit -Identity $ADPath -Recursive -Confirm:$false
+    Write-Host "OU - Finance has been deleted" -ForegroundColor Red
+} else {
+    Write-Host "OU - Finance no longer exits!" -ForegroundColor Green
+}
