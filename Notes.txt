@@ -1,8 +1,0 @@
-Demostrate Comment Based Help
-Prompt the user for a selection
-Give them 3 options
-    Something that will produce an error
-    Something that writes to a file
-    Exit - stops the program
-A function - that shows a menu options and collect the user input inside the scope of the function
-Execption handling (wrap this around the entire script)
